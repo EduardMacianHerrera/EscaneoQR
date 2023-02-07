@@ -16,12 +16,13 @@ public class MainActivity extends AppCompatActivity {
 
     private Button button;
     private TextView textView;
+    private int requestCode = 1;
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    System.out.println("amogus");
+                    System.out.println("Permisos concedidos");
                 } else {
-                    System.out.println("basura");
+                    System.out.println("Permisos no concedidos");
                 }
             });
 
@@ -38,14 +39,22 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this, Manifest.permission.CAMERA) ==
                     PackageManager.PERMISSION_GRANTED) {
                 Intent intent = new Intent(this, ScannerActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, requestCode);
+
             } else {
                 requestPermissionLauncher.launch(
                         Manifest.permission.CAMERA);
             }
         });
+
+
     }
 
-
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            textView.setText(data.getData().toString());
+        }
+    }
 
 }

@@ -1,5 +1,7 @@
 package com.example.escaneoqr;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -28,6 +30,10 @@ public class ScannerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         Toast.makeText(ScannerActivity.this, result.getText(), Toast.LENGTH_SHORT).show();
+                        Intent data = new Intent();
+                        data.setData(Uri.parse(result.getText()));
+                        setResult(RESULT_OK,data);
+                        finish();
                     }
                 });
             }
